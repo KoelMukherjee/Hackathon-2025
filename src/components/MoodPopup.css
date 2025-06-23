@@ -1,0 +1,116 @@
+
+/* Container Card */
+.MoodPopup-Card {
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f6f6fa;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+/* Title */
+.MoodPopup-Title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+/* Flex container for mood items */
+.MoodPopup-FlexBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+/* Each mood item container */
+.MoodPopup-FlexBox > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.MoodPopup-FlexBox > div:hover {
+    transform: scale(1.05);
+}
+
+/* Mood image container */
+.MoodPopup-Card--image {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.MoodPopup-Card--image img {
+    width: 60%;
+    height: auto;
+}
+
+/* Mood title text */
+.MoodPopup-Card--Image-Text {
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* Feedback container */
+.Mood-Feedback {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Feedback text */
+.Mood-Feedback--Text {
+    font-size: 16px;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+/* Feedback button */
+.Mood-Feedback--Button {
+    padding: 10px 20px;
+    background-color: #f6f6fa;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.Mood-Feedback--Button:hover {
+    background-color: #f6f6fa;
+}
+
+/* Fullscreen grey transparent overlay */
+.MoodPopup-Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(51, 51, 51, 0.6); /* translucent dark grey */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Your existing card styling (already posted earlier) */
+.MoodPopup-Card {
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    background-color: #f6f6fa;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: black;
+    font-family: Arial, sans-serif;
+}

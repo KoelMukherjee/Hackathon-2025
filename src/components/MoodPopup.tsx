@@ -1,68 +1,73 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import {NAGATIVE, NEUTRAL, POSITIVE} from "../App.tsx";
+import './MoodPopup.css'
 
-const MoodPopup = () => {
+type MoodPopupProps = {
+  callback: (mood: string) => void;
+  close: () => void;
+}
+const MoodPopup = ({callback, close}: MoodPopupProps) => {
   const [selectedMood, setSelectedMood] = useState("");
 
-  const getMoodMessage = (mood) => {
+  function selectMood(mood: string) {
+
+    console.log('---', `mood`, mood);
+    setSelectedMood(mood);
+    callback(mood);
+    close()
+  }
+
+  const getMoodMessage = (mood: string) => {
     switch (mood) {
-      case "Happy":
+      case POSITIVE:
         return "Wow!! Good to know that you are happy 😄";
-      case "Sad":
-        return "Ohh no, you are unhappy 😢";
-      case "Irritated":
-        return "Why are you irritated? 😠";
-      case "Tired":
-        return "Have a coffee, it will make you feel better. 😴";
-      case "Relaxed":
-        return "Good! Stay relaxed. 😌";
+      case NAGATIVE:
+        return "Don’t let setbacks bring you down – remember to cheer up and keep moving forward.";
+      case NEUTRAL:
       default:
-        return ""; 
+        return "Good! Stay relaxed. 😌";
     }
   };
 
   const moods = [
-    { title: "Happy", image: "/src/assets/happy.jpeg" },
-    { title: "Sad", image: "/src/assets/irritated.jpg" },
-    { title: "Irritated", image: "/src/assets/irritated.jpg" },
-    { title: "Tired", image: "/src/assets/irritated.jpg" },
-    { title: "Relaxed", image: "/src/assets/irritated.jpg" },
+    { title: POSITIVE, text: "Happy", image: "/src/assets/happy.png" },
+    { title: NAGATIVE, text: "Sad", image: "/src/assets/sad.png" },
+    { title: NEUTRAL, text: "Relaxed", image: "/src/assets/relaxed.png" },
   ];
 
   return (
-    <>
-      <div className="MoodPopup-Card" style={{ backgroundColor: "#d60a58" }}>
-        <h2 className="MoodPopup-Title">How are you feeling today?</h2>
-        <div className="MoodPopup-FlexBox">
-          {moods.map((mood, idx) => (
-            <div
-              key={idx}
-              onClick={() => setSelectedMood(mood.title)}
-              style={{ cursor: "pointer" }}
-            >
-              <div className="MoodPopup-Card--image">
-                <img src={mood.image} alt={mood.title} />
-              </div>
-              <p className="MoodPopup-Card--Image-Text">{mood.title}</p>
+      <>
+        <div className="MoodPopup-Overlay">
+          <div className="MoodPopup-Card">
+            <h2 className="MoodPopup-Title">How are you feeling today?</h2>
+            <div className="MoodPopup-FlexBox">
+              {moods.map((mood, idx) => (
+                  <div
+                      key={idx}
+                      onClick={() => selectMood(mood.title)}
+                      style={{ cursor: "pointer" }}
+                  >
+                    <div className="MoodPopup-Card--image">
+                      <img src={mood.image} alt={mood.title} />
+                    </div>
+                    <p className="MoodPopup-Card--Image-Text">{mood.text}</p>
+                  </div>
+              ))}
             </div>
-          ))}
+            <div className="Mood-Feedback">
+              <p className="Mood-Feedback--Text">
+                {selectedMood && getMoodMessage(selectedMood)}
+              </p>
+              <button
+                  className="Mood-Feedback--Button"
+                  onClick={() => selectMood(NEUTRAL)}
+              >
+                See all news
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="Mood-Feedback">
-        <p className="Mood-Feedback--Text">{selectedMood && getMoodMessage(selectedMood)}</p>
-        <button
-          className="Mood-Feedback--Button"
-          onClick={() => {
-            if (selectedMood) {
-              window.location.href = `${window.location.pathname}?mood=${encodeURIComponent(selectedMood)}`;
-            } else {
-              alert("Please select a mood first!");
-            }
-          }}
-        >
-          Let me know your Mood!!
-        </button>
-      </div>
-    </>
+      </>
   );
 };
 
