@@ -41,58 +41,27 @@ export const fetchData = {
     }
   },
 
-  // Alternative: Use a free mock API for testing
-  async getMockNews<T>(sentiment?: string): Promise<T> {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+  // Get political breaking news
+  async getPoliticalBreakingNews<T>(): Promise<T> {
+    try {
+      const url = `${BASE_URL}/top-headlines?apiKey=${API_KEY}&category=politics&pageSize=1`;
 
-    const mockData = {
-      status: "ok",
-      totalResults: 10,
-      articles: [
-        {
-          source: { id: "mock", name: "Mock News" },
-          author: "John Doe",
-          title:
-            sentiment === "positive"
-              ? "Great Success in Technology Sector"
-              : sentiment === "negative"
-              ? "Market Downturn Concerns"
-              : "Technology Update",
-          description:
-            sentiment === "positive"
-              ? "Amazing breakthrough in AI technology shows promising results."
-              : sentiment === "negative"
-              ? "Economic uncertainty causes market volatility."
-              : "Latest developments in the tech industry.",
-          url: "https://example.com",
-          urlToImage: "https://via.placeholder.com/300x200",
-          publishedAt: new Date().toISOString(),
-          content: "This is mock content for testing purposes.",
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Cache-Control": "no-cache",
         },
-        {
-          source: { id: "mock", name: "Mock News" },
-          author: "Jane Smith",
-          title:
-            sentiment === "positive"
-              ? "Innovation Leads to Growth"
-              : sentiment === "negative"
-              ? "Challenges Ahead for Industry"
-              : "Industry Report Released",
-          description:
-            sentiment === "positive"
-              ? "New innovations are driving unprecedented growth in the sector."
-              : sentiment === "negative"
-              ? "Industry faces significant challenges in the coming months."
-              : "Comprehensive industry report provides insights into current trends.",
-          url: "https://example.com",
-          urlToImage: "https://via.placeholder.com/300x200",
-          publishedAt: new Date().toISOString(),
-          content: "This is mock content for testing purposes.",
-        },
-      ],
-    };
+      });
 
-    return mockData as T;
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw error;
+    }
   },
 };
