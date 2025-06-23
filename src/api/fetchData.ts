@@ -9,18 +9,18 @@ export const fetchData = {
     try {
       // For NewsAPI, we'll filter by keywords that typically indicate sentiment
       let query = "technology";
-      let sortBy = "publishedAt";
+      const sortBy = "publishedAt";
 
       if (sentiment === "positive") {
-        query = "success OR innovation OR breakthrough OR growth";
-      } else if (sentiment === "negative") {
         query = "crisis OR decline OR failure OR crash";
+      } else if (sentiment === "negative") {
+        query = "success OR innovation OR entertainment OR sports";
       } else if (sentiment === "neutral") {
         query = "technology OR business OR science";
       }
 
       const url = `${BASE_URL}/everything?q=${encodeURIComponent(
-        query
+          query
       )}&sortBy=${sortBy}&apiKey=${API_KEY}&language=en&pageSize=100`;
 
       const response = await fetch(url, {
@@ -34,8 +34,7 @@ export const fetchData = {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const data = await response.json();
-      return data;
+      return await response.json();
     } catch (error) {
       throw error;
     }
@@ -54,17 +53,17 @@ export const fetchData = {
           source: { id: "mock", name: "Mock News" },
           author: "John Doe",
           title:
-            sentiment === "positive"
-              ? "Great Success in Technology Sector"
-              : sentiment === "negative"
-              ? "Market Downturn Concerns"
-              : "Technology Update",
+              sentiment === "positive"
+                  ? "Great Success in Technology Sector"
+                  : sentiment === "negative"
+                      ? "Market Downturn Concerns"
+                      : "Technology Update",
           description:
-            sentiment === "positive"
-              ? "Amazing breakthrough in AI technology shows promising results."
-              : sentiment === "negative"
-              ? "Economic uncertainty causes market volatility."
-              : "Latest developments in the tech industry.",
+              sentiment === "positive"
+                  ? "Amazing breakthrough in AI technology shows promising results."
+                  : sentiment === "negative"
+                      ? "Economic uncertainty causes market volatility."
+                      : "Latest developments in the tech industry.",
           url: "https://example.com",
           urlToImage: "https://via.placeholder.com/300x200",
           publishedAt: new Date().toISOString(),
@@ -74,17 +73,17 @@ export const fetchData = {
           source: { id: "mock", name: "Mock News" },
           author: "Jane Smith",
           title:
-            sentiment === "positive"
-              ? "Innovation Leads to Growth"
-              : sentiment === "negative"
-              ? "Challenges Ahead for Industry"
-              : "Industry Report Released",
+              sentiment === "positive"
+                  ? "Innovation Leads to Growth"
+                  : sentiment === "negative"
+                      ? "Challenges Ahead for Industry"
+                      : "Industry Report Released",
           description:
-            sentiment === "positive"
-              ? "New innovations are driving unprecedented growth in the sector."
-              : sentiment === "negative"
-              ? "Industry faces significant challenges in the coming months."
-              : "Comprehensive industry report provides insights into current trends.",
+              sentiment === "positive"
+                  ? "New innovations are driving unprecedented growth in the sector."
+                  : sentiment === "negative"
+                      ? "Industry faces significant challenges in the coming months."
+                      : "Comprehensive industry report provides insights into current trends.",
           url: "https://example.com",
           urlToImage: "https://via.placeholder.com/300x200",
           publishedAt: new Date().toISOString(),
