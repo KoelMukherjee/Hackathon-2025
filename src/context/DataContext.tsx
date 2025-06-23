@@ -31,6 +31,8 @@ interface DataContextType {
   error: string | null;
   fetchNews: (sentiment?: string) => Promise<void>;
   currentSentiment: string;
+  breakingNews: NewsArticle[];
+  fetchBreakingNews: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -50,6 +52,7 @@ interface DataProviderProps {
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(false);
+  const [breakingNews, setBreakingNews] = useState<NewsArticle[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [currentSentiment, setCurrentSentiment] = useState<string>("positive");
 
@@ -74,12 +77,19 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     fetchNews("positive");
   }, []);
 
+  const fetchBreakingNews = async () => {
+    const data = await fetchData.getNews<NewsResponse>("negative");
+    setBreakingNews(data.articles);
+  };
+
   const value: DataContextType = {
     news,
     loading,
     error,
     fetchNews,
     currentSentiment,
+    breakingNews,
+    fetchBreakingNews,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

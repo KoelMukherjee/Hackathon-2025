@@ -1,13 +1,18 @@
-import React from "react";
-import { useData } from "../context/DataContext"
+import React, { useEffect } from "react";
+import { useData } from "../context/DataContext";
 
 interface BreakingNewsProps {
-  sentiment?: string
+  sentiment?: string;
 }
 
-const BreakingNews: React.FC<BreakingNewsProps> = ({sentiment = "Neutral"}) => {
+const BreakingNews: React.FC<BreakingNewsProps> = ({
+  sentiment = "Neutral",
+}) => {
+  const { breakingNews: news, fetchBreakingNews } = useData();
 
-  const { news } = useData();
+  useEffect(() => {
+    fetchBreakingNews();
+  }, []);
 
   // Helper function to truncate text based on sentiment
   const truncateText = (text: string, length: "short" | "medium" | "full") => {
@@ -29,7 +34,6 @@ const BreakingNews: React.FC<BreakingNewsProps> = ({sentiment = "Neutral"}) => {
   const shouldShowScrollingText = ["negative"].includes(
     sentiment.toLowerCase()
   );
-  
 
   // Show only scrolling text for negative sentiments
   if (shouldShowScrollingText) {
@@ -105,16 +109,12 @@ const BreakingNews: React.FC<BreakingNewsProps> = ({sentiment = "Neutral"}) => {
                   height: "100",
                   objectFit: "cover",
                   borderRadius: "6px",
-                  
-                  
                 }}
                 onError={(e) => {
                   e.currentTarget.src =
                     "https://via.placeholder.com/300x200/ffffff/666666?text=Politics";
                 }}
               />
-
-              
             </div>
           )}
 
