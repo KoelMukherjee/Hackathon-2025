@@ -1,25 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { fetchData } from "../api/fetchData";
-import { useSentiment } from "../context/SentimentContext";
-import { useData } from "../context/DataContext";
-
-interface NewsArticle {
-  source: { id: string | null; name: string };
-  author: string | null;
-  title: string;
-  description: string | null;
-  url: string;
-  urlToImage: string | null;
-  publishedAt: string;
-  content: string | null;
-}
+import React from "react";
+import { useData } from "../context/DataContext"
 
 interface BreakingNewsProps {
-  autoScroll?: boolean;
+  sentiment?: string
 }
 
-const BreakingNews: React.FC<BreakingNewsProps> = () => {
-  const { sentimentState } = useSentiment();
+const BreakingNews: React.FC<BreakingNewsProps> = ({sentiment = "Neutral"}) => {
+
   const { news } = useData();
 
   // Helper function to truncate text based on sentiment
@@ -39,29 +26,10 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
   };
 
   // Check if sentiment should show only scrolling text
-  const shouldShowScrollingText = ["irritated", "tired", "sad"].includes(
-    sentimentState.title.toLowerCase()
+  const shouldShowScrollingText = ["negative"].includes(
+    sentiment.toLowerCase()
   );
-  console.log(news);
-  //   if (!news) {
-  //     return (
-  //       <div
-  //         style={{
-  //           backgroundColor: sentimentState.color,
-  //           color: "white",
-  //           padding: "12px 0",
-  //           position: "sticky",
-  //           top: 0,
-  //           zIndex: 1000,
-  //           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-  //         }}
-  //       >
-  //         <div style={{ textAlign: "center" }}>
-  //           🔥 Loading breaking political news...
-  //         </div>
-  //       </div>
-  //     );
-  //   }
+  
 
   // Show only scrolling text for negative sentiments
   if (shouldShowScrollingText) {
@@ -72,7 +40,7 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
           color: "white",
           padding: "12px 0",
           position: "sticky",
-          top: 0,
+          top: 70,
           zIndex: 1000,
           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           overflow: "hidden",
@@ -113,7 +81,7 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
         color: "white",
         padding: "16px 0",
         position: "sticky",
-        top: 0,
+        top: 70,
         zIndex: 1000,
         boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
       }}
@@ -133,13 +101,12 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
                 src={news[0]?.urlToImage}
                 alt={news[0]?.title}
                 style={{
-                  width: "300px",
-                  height: "200px",
+                  width: "200px",
+                  height: "100",
                   objectFit: "cover",
                   borderRadius: "6px",
-                  border: "2px solid rgba(255,255,255,0.3)",
-                  filter: `blur(${sentimentState.blurAmount}px)`,
-                  opacity: 1 - sentimentState.overlayOpacity,
+                  
+                  
                 }}
                 onError={(e) => {
                   e.currentTarget.src =
@@ -147,25 +114,7 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
                 }}
               />
 
-              {/* Sentiment Overlay */}
-              {sentimentState.showOverlay && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: "rgba(0,0,0,0.6)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: "6px",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                  }}
-                ></div>
-              )}
+              
             </div>
           )}
 
@@ -179,7 +128,7 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
                 lineHeight: "1.3",
               }}
             >
-              {truncateText(news[0]?.title, sentimentState.textLength)}
+              {truncateText(news[0]?.title, "medium")}
             </h3>
             {news[0]?.description && (
               <p
@@ -190,7 +139,7 @@ const BreakingNews: React.FC<BreakingNewsProps> = () => {
                   lineHeight: "1.4",
                 }}
               >
-                {truncateText(news[0]?.description, sentimentState.textLength)}
+                {truncateText(news[0]?.description, "medium")}
               </p>
             )}
             <div style={{ marginTop: "8px", fontSize: "12px", opacity: "0.8" }}>
